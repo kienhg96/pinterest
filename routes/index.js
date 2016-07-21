@@ -55,9 +55,53 @@ module.exports = function(passport){
         else {
             res.json(null);
         }
-    })
+    });
     
+    router.post('/postpin', function(req, res){
+        if (req.isAuthenticated()){
+            var imgUrl = req.body.imgUrl;
+            var title = req.body.title;
+            mongo.connect(process.env.MONGO_URI, function(err, db){
+                if (err) throw err;
+                db.collection('pin').insert({author: req.user.username, imgUrl: imgUrl, title: title, date: new Date()}, function(err, result){
+                    if (err) throw err;
+                    db.close();
+                    res.json({errCode: 0, result: result.ops[0]});
+                });
+            });
+        }
+        else {
+            res.json({errCode: -3, msg: "You are not login"});
+        }
+    });
     
+    router.get('/pin', function(req, res){
+        mongo.connect(process.env.MONGO_URI, function(err, db){
+            if (err) throw err;
+            db.collection('pin').find({}, {sort: [['date', 'desc']]}).toArray(function(err, data){
+               if (err) throw err;
+               res.json({errCode: 0, data: data});
+               db.close();
+            });
+        });
+    });
+    
+    router.get('/mypin', function(req, res){
+       if (req.isAuthenticated()) {
+           mongo.connect(process.env.MONGO_URI, function(err, db){
+               if (err) throw err;
+               db.collection('pin').find({author: req.user.username}, {sort: [['date', 'desc']]}).toArray(function(err, data){
+                  if (err) throw err;
+                  res.json({errCode: 0, data: data});
+                  db.close();
+               });
+           });
+       }
+       else {
+           res.json({errCode: -3, msg: 'You are not login'});
+       }
+    });
+
     return router;
 }
 //module.exports = router;

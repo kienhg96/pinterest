@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 
 exports = module.exports = function(passport){
-    passport.use(new LocalStrategy(function(username, password, done){
+    passport.use('login', new LocalStrategy(function(username, password, done){
         mongo.connect(process.env.MONGO_URI, function(err, db){
             if (err) return done(err);
             db.collection('user').findOne({username: username}, function(err, user){
@@ -20,6 +20,32 @@ exports = module.exports = function(passport){
                 return done(null, user);
             });
         });
+    }));
+    
+    passport.use('signup', new LocalStrategy(function(username, password, done){
+        var findOrCreateUser = function(){
+            mongo.connect(process.env.MONGO_URI, function(err, db){
+               if (err) return done(err);
+               db.collection('user').findOne({username: username}, function(err, user){
+                   if (err) {
+                       db.close()
+                       return done(err);
+                   }
+                   if (user){
+                       db.close();
+                       return done(null, false);
+                   }
+                   else {
+                       db.collection('user').insert({username: username, password: password}, function(err, data){
+                           db.close();
+                           if (err) return done(err);
+                           return done(null, data.ops[0]);
+                       });
+                   }
+               });
+            });
+        }
+        process.nextTick(findOrCreateUser);
     }));
     
     passport.serializeUser(function(user, done){

@@ -3,9 +3,12 @@ $(document).ready(function(){
     var btnLogin = $('#login');
     var btnSignup = $('#signup');
     var btnLogout = $('#logout');
+    var btnPostPin = $('#postpin');
     var btnUser = $('#user');
     var txtUsername = $('#username');
     var txtPassword = $('#password');
+    var txtUrl = $('#url');
+    var txtTitle = $('#title');
     btnLogin.click(function(){
        var username = txtUsername.val();
        var password = txtPassword.val();
@@ -30,5 +33,12 @@ $(document).ready(function(){
         $.get('/user', function(data){
             console.log(data);
         })
-    })
+    });
+    btnPostPin.click(function(){
+        var title = txtTitle.val();
+        var url = txtUrl.val();
+        $.post('/postpin', {imgUrl: url, title: title}, function(data){
+           console.log(data); 
+        });
+    });
 });
