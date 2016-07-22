@@ -1,14 +1,45 @@
 extends layout.pug
 block content
-    h1 Hello, this is block
-    input#username(type="text")
-    input#password(type="text")
-    button#login Login
-    button#signup Signup
-    button#logout Logout
-    button#user User
-    br
-    input#title(type="text")
-    input#url(type="text")
-    button#postpin Post pin
-    script(src="/javascript/index.js")
+    nav.navbar.navbar-default
+        div.containter-fluid
+            div.navbar-header
+                button.navbar-toggle(type="button", data-toggle="collapse", data-target="#myNavbar")
+                    span.icon-bar
+                    span.icon-bar
+                    span.icon-bar
+                a.navbar-brand(href="/") Pinterest
+            div.collapse.navbar-collapse#myNavbar
+                ul.nav.navbar-nav.navbar-right
+                    li.dropdown
+                        a.dropdown-toggle(data-toggle="dropdown", href="#")
+                            span.glyphicon.glyphicon-user
+                            |  Signup 
+                            span.caret
+                        ul.dropdown-menu
+                            li
+                                div.form
+                                    input.form-control.username(placeholder="Username")
+                                    input.form-control.password(placeholder="Password", type="password")
+                                    input.form-control#repPassword(placeholder="Repeat password", type="password")
+                                    button.btn.btn-primary.form-control#btnSignup Sign up
+                    li.dropdown
+                        a.dropdown-toggle(data-toggle="dropdown", href="#")
+                            span.glyphicon.glyphicon-log-in
+                            |  Login 
+                            span.caret
+                        ul.dropdown-menu
+                            li
+                                div.form
+                                    input.form-control.username(placeholder="Username")
+                                    input.form-control.password(placeholder="Password", type="password")
+                                    button.btn.btn-primary.form-control#btnLogin Login
+    div#wrapper
+        div#columns
+            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/2/2v3VhAp.png" /><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat consectetur pellentesque. Nam ac elit risus, ac blandit dui. Duis rutrum porta tortor ut convallis. Duis rutrum porta tortor ut convallis.</p></div>
+            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/1/1swi3Qy.png" /><p>Donec a fermentum nisi.</p></div>
+            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/6/6f3nXse.png" /><p>LNullam eget lectus augue. Donec eu sem sit amet ligula faucibus suscipit. Suspendisse rutrum turpis quis nunc convallis quis aliquam mauris suscipit.</p></div>
+            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/2/2v3VhAp.png" /><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat consectetur pellentesque. Nam ac elit risus, ac blandit dui. Duis rutrum porta tortor ut convallis. Duis rutrum porta tortor ut convallis.</p></div>
+            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/1/1swi3Qy.png" /><p>Donec a fermentum nisi.</p></div>
+            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/6/6f3nXse.png" /><p>LNullam eget lectus augue. Donec eu sem sit amet ligula faucibus suscipit. Suspendisse rutrum turpis quis nunc convallis quis aliquam mauris suscipit.</p></div>
+            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/2/2v3VhAp.png" /><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat consectetur pellentesque. Nam ac elit risus, ac blandit dui. Duis rutrum porta tortor ut convallis. Duis rutrum porta tortor ut convallis.</p></div>
+            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/1/1swi3Qy.png" /><p>Donec a fermentum nisi.</p></div>

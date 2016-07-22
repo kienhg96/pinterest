@@ -65,5 +65,6 @@ exports = module.exports = function(passport){
             });
         });
     });
+    
 }
 exports.router = router;

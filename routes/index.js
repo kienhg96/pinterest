@@ -4,9 +4,14 @@ var mongo = require('mongodb').MongoClient;
 
 
 module.exports = function(passport){
+    router.get('/_', function(req, res){
+        res.render('index_', {title: 'Home'});
+    });
+    
     router.get('/', function(req, res){
         res.render('index', {title: 'Home'});
-    });
+    });    
+    
     router.post('/login', function(req, res) {
         passport.authenticate('login', function(err, user, info) {
             if (err) { 
