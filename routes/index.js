@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongo = require('mongodb').MongoClient;
-
+var ObjectID = require('mongodb').ObjectID;
 
 module.exports = function(passport){
     router.get('/_', function(req, res){
@@ -9,7 +9,19 @@ module.exports = function(passport){
     });
     
     router.get('/', function(req, res){
-        res.render('index', {title: 'Home'});
+        var user = null;
+        
+        mongo.connect(process.env.MONGO_URI, function(err, db){
+            if (err) throw err;
+            db.collection('pin').find({}, {sort: [['date', 'desc']]}).toArray(function(err, data){
+                if (err) throw err;
+                if (req.isAuthenticated()){
+                    user = {username: req.user.username, id: req.user._id.toString()};
+                }
+                res.render('index', {title: 'Home', user: user, pins: data});
+                db.close();
+            });
+        });
     });    
     
     router.post('/login', function(req, res) {
@@ -38,7 +50,7 @@ module.exports = function(passport){
             }
             req.logIn(user, function(err){
                 if (err) throw err;
-                return res.json({errCode: 0, msg: 'Signup Success'});
+                return res.json({errCode: 0, msg: 'Signup Success', username: req.user.username});
             });
         })(req, res); 
     });
@@ -106,6 +118,42 @@ module.exports = function(passport){
            res.json({errCode: -3, msg: 'You are not login'});
        }
     });
+
+    router.get('/mypins', function(req, res){
+        if (req.isAuthenticated()) {
+            mongo.connect(process.env.MONGO_URI, function(err, db){
+               if (err) throw err;
+               db.collection('pin').find({author: req.user.username}, {sort: [['date', 'desc']]}).toArray(function(err, data){
+                  if (err) throw err;
+                  var user = {username: req.user.username, id: req.user._id.toString()};
+                  res.render('index', {title: 'My pins', user: user, pins: data, mypins: true});
+                  db.close();
+               });
+           });
+        }
+        else {
+            res.redirect('/');
+        }
+    });
+
+    router.post('/delpins', function(req, res){
+        if (req.isAuthenticated()){
+            var id = req.body.id;
+            //console.log(id);
+            mongo.connect(process.env.MONGO_URI, function(err, db){
+                if (err) throw err;
+                db.collection('pin').remove({_id: ObjectID(id)}, function(err){
+                    if (err) throw err;
+                    db.close();
+                    res.json({errCode: 0});
+                });
+            });
+        }
+        else {
+            res.json({errCode: -3, msg: 'You are not login'});
+        }
+    });
+
 
     return router;
 }

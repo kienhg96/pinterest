@@ -9,37 +9,57 @@ block content
                     span.icon-bar
                 a.navbar-brand(href="/") Pinterest
             div.collapse.navbar-collapse#myNavbar
-                ul.nav.navbar-nav.navbar-right
-                    li.dropdown
-                        a.dropdown-toggle(data-toggle="dropdown", href="#")
-                            span.glyphicon.glyphicon-user
-                            |  Signup 
-                            span.caret
-                        ul.dropdown-menu
-                            li
-                                div.form
-                                    input.form-control.username(placeholder="Username")
-                                    input.form-control.password(placeholder="Password", type="password")
-                                    input.form-control#repPassword(placeholder="Repeat password", type="password")
-                                    button.btn.btn-primary.form-control#btnSignup Sign up
-                    li.dropdown
-                        a.dropdown-toggle(data-toggle="dropdown", href="#")
-                            span.glyphicon.glyphicon-log-in
-                            |  Login 
-                            span.caret
-                        ul.dropdown-menu
-                            li
-                                div.form
-                                    input.form-control.username(placeholder="Username")
-                                    input.form-control.password(placeholder="Password", type="password")
-                                    button.btn.btn-primary.form-control#btnLogin Login
-    div#wrapper
+                ul.nav.navbar-nav.navbar-right#rightPanel
+                    if user
+                        li
+                            a#mypins(href="/mypins") My Pins
+                        li.dropdown
+                            a.dropdown-toggle(href="#") Add Pins
+                                span.caret
+                            ul.dropdown-menu
+                                li
+                                    div.form
+                                        input.form-control#imgTitle(placeholder="Title here")
+                                        input.form-control#imgUrl(placeholder="Image Url here")
+                                        button.btn.btn-primary.form-control#btnPostpin Post this pin
+                        li.dropdown
+                            a.dropdown-toggle(href="#") Hello, #{user.username} 
+                                span.caret
+                            ul.dropdown-menu
+                                li
+                                    div.form
+                                        button.btn.btn-primary.form-control#btnLogout Logout
+                    else
+                        li.dropdown
+                            a.dropdown-toggle(href="#")
+                                span.glyphicon.glyphicon-user
+                                |  Signup 
+                                span.caret
+                            ul.dropdown-menu
+                                li
+                                    div.form#signupForm
+                                        input.form-control.username(placeholder="Username")
+                                        input.form-control.password(placeholder="Password", type="password")
+                                        input.form-control.has-error#repPassword(placeholder="Repeat password", type="password")
+                                        button.btn.btn-primary.form-control#btnSignup Sign up
+                        li.dropdown
+                            a.dropdown-toggle(href="#")
+                                span.glyphicon.glyphicon-log-in
+                                |  Login 
+                                span.caret
+                            ul.dropdown-menu
+                                li
+                                    div.form#loginForm
+                                        input.form-control.username(placeholder="Username")
+                                        input.form-control.password(placeholder="Password", type="password")
+                                        button.btn.btn-primary.form-control#btnLogin Login
+    div.container
         div#columns
-            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/2/2v3VhAp.png" /><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat consectetur pellentesque. Nam ac elit risus, ac blandit dui. Duis rutrum porta tortor ut convallis. Duis rutrum porta tortor ut convallis.</p></div>
-            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/1/1swi3Qy.png" /><p>Donec a fermentum nisi.</p></div>
-            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/6/6f3nXse.png" /><p>LNullam eget lectus augue. Donec eu sem sit amet ligula faucibus suscipit. Suspendisse rutrum turpis quis nunc convallis quis aliquam mauris suscipit.</p></div>
-            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/2/2v3VhAp.png" /><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat consectetur pellentesque. Nam ac elit risus, ac blandit dui. Duis rutrum porta tortor ut convallis. Duis rutrum porta tortor ut convallis.</p></div>
-            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/1/1swi3Qy.png" /><p>Donec a fermentum nisi.</p></div>
-            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/6/6f3nXse.png" /><p>LNullam eget lectus augue. Donec eu sem sit amet ligula faucibus suscipit. Suspendisse rutrum turpis quis nunc convallis quis aliquam mauris suscipit.</p></div>
-            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/2/2v3VhAp.png" /><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat consectetur pellentesque. Nam ac elit risus, ac blandit dui. Duis rutrum porta tortor ut convallis. Duis rutrum porta tortor ut convallis.</p></div>
-            | <div class="pin"><img src="http://cssdeck.com/uploads/media/items/1/1swi3Qy.png" /><p>Donec a fermentum nisi.</p></div>
+            if pins
+                each val in pins
+                    div.pin
+                        img(src= val.imgUrl, onerror="imgErr(this);")
+                        p= val.title
+                        if mypins
+                            button.btn.btn-danger.btn-xs.btnDel Delete
+    script(src="/javascript/index.js")
