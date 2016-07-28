@@ -193,7 +193,7 @@ $(document).ready(function(){
 			$.post('/signup', {username: username, password: password}, function(result){
 				if (result.errCode === 0) {
 					$('.dropdown').removeClass('open');
-					$('#rightPanel').html('<li><a href="/mypins">My Pins</a></li><li class="dropdown"><a class="dropdown-toggle" href="#">Hello, ' +result.username + ' <span class="caret"></span></a><ul class="dropdown-menu"><li><div class="form"><button id="btnLogout" class="btn btn-primary form-control">Logout</button></li></ul></li>');
+					$('#rightPanel').html('<li><a href="/mypins">My Pins</a></li><li class="dropdown"><a class="dropdown-toggle" href="#">Add Pins <span class="caret"></span></a><ul class="dropdown-menu"><li><div class="form"><input class="form-control" id="imgTitle" placeholder="Title here"/><input class="form-control" id="imgUrl" placeholder="Image Url here"/><button class="btn btn-primary form-control" id="btnPostpin">Post this pin</button></div></li></ul></li><li class="dropdown"><a class="dropdown-toggle" href="#">Hello, ' +result.username + ' <span class="caret"></span></a><ul class="dropdown-menu"><li><div class="form"><button id="btnLogout" class="btn btn-primary form-control">Logout</button></li></ul></li>');
 					EventDropdown();
 					btnLogout = $('#btnLogout');
 					btnLogout.click(fnBtnLogoutClick);
